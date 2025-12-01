@@ -1,0 +1,626 @@
+/* ================================================================ */
+/* =================== SETUP DASAR & FONT ========================= */
+/* ================================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cinzel:wght@600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    /* Warna fallback jika JS gagal memuat */
+    background-color: #05030a; 
+    color: #e2e8f0;
+    overflow-x: hidden;
+    margin: 0;
+}
+
+/* ================================================================ */
+/* =========== LATAR BELAKANG VANTA JS (CONTAINER) ================ */
+/* ================================================================ */
+#vanta-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none; /* PENTING: Agar klik tembus ke konten */
+}
+
+/* ================================================================ */
+/* ================= BAR PROGRES & SCROLL REVEAL ================== */
+/* ================================================================ */
+#progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    /* Gradasi Emas ke Ungu */
+    background: linear-gradient(90deg, #FDB931, #9d4edd, #FDB931);
+    background-size: 200% 100%;
+    animation: goldShimmer 3s infinite linear;
+    width: 0%;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(253, 185, 49, 0.5);
+    transition: width 0.1s linear;
+}
+
+@keyframes goldShimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+}
+
+/* Animasi Masuk Artikel (Scroll Reveal) */
+.article-container {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    margin-bottom: 1.5rem;
+}
+
+.article-container:not(.sub-article-container) {
+    border-radius: 0.5rem;
+    overflow: hidden; /* Agar sudut rounded tetap terlihat */
+}
+
+.article-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ================================================================ */
+/* ====================== GAYA UI UTAMA ======================= */
+/* ================================================================ */
+
+/* 1. Header Artikel Utama (Default: Solid Ungu Gelap) */
+.article-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    cursor: pointer; 
+    padding: 1rem 1.5rem; 
+    border-radius: 0.5rem; 
+    transition: all 0.4s ease; /* Transisi halus untuk gradien */
+    color: #FDE68A; /* Teks Emas Pucat */
+    
+    /* Background SOLID (Tidak Transparan) */
+    background: #1a0b2e; 
+    
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); 
+    position: sticky; 
+    top: 1rem; 
+    z-index: 10; 
+    border: 1px solid rgba(255, 215, 0, 0.15); /* Border Emas Tipis */
+}
+
+/* Hover State Header */
+.article-header:hover {
+    background: #240f3e; /* Sedikit lebih terang saat hover */
+    border-color: rgba(255, 215, 0, 0.5);
+}
+
+.article-header h3 { 
+    color: #fff; 
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    font-family: 'Cinzel', serif; /* Font judul agar lebih megah */
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* 2. Header Artikel Saat Expand (Aktif: Gradien Ungu-Emas) */
+.article-container.active .article-header { 
+    border-radius: 0.5rem 0.5rem 0 0; 
+    
+    /* EFEK GRADIEN: Ungu Gelap -> Ungu Vivid -> Emas Gelap */
+    background: linear-gradient(110deg, #1a0b2e 0%, #4c1d95 65%, #b45309 100%);
+    
+    border-bottom-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 10px 25px -5px rgba(255, 185, 0, 0.15);
+}
+
+/* 3. Konten Artikel (Solid Gelap) */
+.article-content { 
+    /* Background SOLID Sangat Gelap */
+    background: #0f0718; 
+    
+    border: 1px solid rgba(255, 215, 0, 0.15); 
+    border-top: none; 
+    border-radius: 0 0 0.5rem 0.5rem; 
+    max-height: 0; 
+    overflow: hidden; 
+    transition: max-height 0.7s ease-in-out, padding 0.5s ease-in-out; 
+    padding-left: 1.5rem; 
+    padding-right: 1.5rem; 
+    padding-top: 0; 
+    padding-bottom: 0; 
+}
+
+.article-content-inner p { 
+    margin-bottom: 1.25rem; 
+    text-align: justify; 
+    text-indent: 2em; 
+    color: #cbd5e1; 
+}
+
+/* Style Gambar dalam Artikel */
+.article-content-inner img {
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.article-content-inner img:hover {
+    transform: scale(1.01);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 215, 0, 0.3);
+}
+.article-content-inner p:last-child { margin-bottom: 0; }
+
+/* State Aktif Konten */
+.article-container.active .article-content { 
+    max-height: 90vh; 
+    overflow-y: auto; 
+    padding-top: 1.5rem; 
+    padding-bottom: 1.5rem; 
+}
+
+/* Icon Panah (Collapse Icon) */
+.collapse-icon svg { transition: transform 0.3s ease-in-out, stroke 0.3s ease; stroke: #FDB931; }
+/* Saat aktif, panah jadi putih agar kontras dengan background emas */
+.article-container.active .collapse-icon svg { transform: rotate(180deg); stroke: #ffffff; }
+
+/* Scrollbar Custom - Gold Theme */
+.article-content::-webkit-scrollbar { width: 6px; }
+.article-content::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); border-radius: 10px; }
+.article-content::-webkit-scrollbar-thumb { background-color: #6d5b24; border-radius: 10px; border: none; }
+.article-content::-webkit-scrollbar-thumb:hover { background-color: #FDB931; }
+
+/* ================================================================ */
+/* ===================== GAYA SUB-ARTIKEL ===================== */
+/* ================================================================ */
+.sub-article-container { 
+    margin-left: 1.5rem; 
+    width: calc(100% - 1.5rem); 
+    margin-top: 1rem; 
+    position: relative; 
+    overflow: hidden; /* PENTING: Agar kilau pantulan tidak keluar dari kotak */
+    
+    /* --- EFEK ULTIMATE GLASS (MULTIPLE BACKGROUNDS) --- */
+    background: 
+        /* Layer 1: Pantulan Cahaya Statis (Glare) dari Pojok Kiri Atas */
+        linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 35%),
+        /* Layer 2: Tint Ungu Tipis */
+        rgba(76, 29, 149, 0.2);
+    
+    /* Efek Blur */
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    
+    /* Border: Lebih terang di atas/kiri (sumber cahaya), lebih gelap di bawah/kanan */
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    
+    /* Shadow: Shadow luar untuk kedalaman + Shadow dalam (Inset) untuk ketebalan kaca */
+    box-shadow: 
+        0 8px 32px 0 rgba(30, 10, 60, 0.25), 
+        inset 0 0 20px rgba(255, 255, 255, 0.02); /* Pantulan dalam halus */
+    
+    border-radius: 1rem; 
+    
+    /* Agar animasi smooth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect pada Container: Sedikit melayang */
+.sub-article-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px 0 rgba(30, 10, 60, 0.4);
+}
+
+/* --- EFEK KILAU (SHINE) BERGERAK --- */
+/* Ini membuat garis cahaya lewat saat kursor diarahkan */
+.sub-article-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%; /* Mulai jauh di kiri */
+    width: 100%;
+    height: 100%;
+    
+    /* Membuat garis kilau miring */
+    background: linear-gradient(
+        90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.0) 20%, 
+        rgba(255, 255, 255, 0.1) 50%, /* Kilau putih di tengah */
+        rgba(255, 255, 255, 0.0) 80%, 
+        transparent
+    );
+    
+    transform: skewX(-25deg); /* Memiringkan kilau */
+    pointer-events: none; /* Agar tidak menghalangi klik */
+    transition: left 0.7s ease-in-out; /* Kecepatan kilau lewat */
+}
+
+/* Trigger Kilau saat Hover */
+.sub-article-container:hover::after {
+    left: 150%; /* Bergerak ke kanan sampai hilang */
+    transition: left 1s ease-in-out;
+}
+
+/* 1. Header Sub-Artikel */
+.sub-article-container .article-header { 
+    background: transparent; 
+    box-shadow: none; 
+    border: none;
+    border-bottom: 1px solid rgba(167, 139, 250, 0.1); 
+    border-radius: 1rem 1rem 0.5rem 0.5rem; 
+    padding: 0.75rem 1rem; 
+    position: static; 
+    z-index: 2; /* Di atas kilau */
+}
+
+.sub-article-container .article-header h3 { 
+    font-size: 1rem; 
+    font-weight: 500; 
+    font-family: 'Inter', sans-serif; 
+    color: #cbd5e1; 
+    transition: color 0.3s ease; 
+    text-shadow: none;
+}
+
+/* 2. Header Sub-Artikel Saat Expand */
+.sub-article-container.active .article-header {
+    border-radius: 1rem 1rem 0 0;
+    /* Gradien semi-transparan dengan campuran Emas/Ungu */
+    background: linear-gradient(110deg, rgba(180, 83, 9, 0.9) 0%, rgba(109, 40, 217, 0.9) 60%, rgba(76, 29, 149, 0) 100%);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.sub-article-container.active .article-header h3 { 
+    color: #FDB931; 
+    font-weight: 600; 
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+.sub-article-container.active .article-header .collapse-icon svg { 
+    stroke: #FDB931; 
+    transform: rotate(180deg); 
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));
+}
+
+/* Konten Sub-Artikel */
+.sub-article-container .article-content { 
+    background: transparent; 
+    padding-left: 1rem; 
+    border: none;
+    border-radius: 0 0 1rem 1rem;
+    position: relative;
+    z-index: 2; /* Di atas kilau */
+}
+
+/* Garis Dekorasi Kiri */
+.sub-article-container::before { 
+    content: ''; 
+    position: absolute; 
+    left: -0.75rem; 
+    top: 5px; 
+    bottom: 5px; 
+    width: 2px; 
+    background: linear-gradient(to bottom, transparent, rgba(255, 215, 0, 0.4), transparent); 
+    border-radius: 2px; 
+}
+
+/* ================================================================ */
+/* =========== INTERAKSI TEKS (HIGHLIGHT & ANIMASI) ============= */
+/* ================================================================ */
+.original-text-segment { 
+    cursor: pointer; 
+    transition: background-color 0.2s ease-in-out, color 0.2s ease; 
+    padding: 2px 0px; 
+    border-radius: 4px; 
+}
+.original-text-segment:hover { background-color: rgba(253, 185, 49, 0.15); color: #FDB931; }
+
+/* Teks yang sedang diklik */
+.selected-text { 
+    background-color: rgba(253, 185, 49, 0.25)!important; 
+    color: #FDE68A!important; 
+    font-weight: 500!important; 
+    box-shadow: 0 0 0 2px rgba(253, 185, 49, 0.1)!important;
+}
+
+/* Animasi Bookmark Highlight */
+@keyframes bookmark-blink {
+    0%, 100% { background-color: transparent; color: inherit; }
+    50% { background-color: rgba(253, 185, 49, 0.4); color: white; }
+}
+.bookmark-highlight { animation: bookmark-blink 0.8s ease-in-out 3; }
+
+/* Animasi Sorotan Artikel (Search Highlight) */
+@keyframes temporary-highlight {
+    0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.3); border-color: rgba(255, 215, 0, 0.6); }
+    50% { box-shadow: 0 0 30px 5px rgba(255, 215, 0, 0.2); border-color: rgba(255, 215, 0, 1); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); border-color: transparent; }
+}
+.article-highlight { animation: temporary-highlight 2s ease-out; border: 1px solid transparent; border-radius: 6px; }
+
+/* ================================================================ */
+/* =================== POPUP TERJEMAHAN ======================= */
+/* ================================================================ */
+#translation-popup { 
+    display: flex; 
+    align-items: center; 
+    gap: 0.75rem; 
+    position: absolute; 
+    z-index: 20; 
+    transform: translateY(10px); 
+    transition: opacity 0.2s ease-in-out; 
+    pointer-events: none; 
+    opacity: 0; 
+    padding: 1rem; 
+    border-radius: 0.5rem; 
+    max-width: 450px; 
+    font-size: 0.95rem; 
+    
+    color: #e2e8f0; 
+    background: #1a0b2e; /* Solid Dark Purple */
+    border: 1px solid #FDB931; 
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+#translation-popup.visible { opacity: 1; pointer-events: auto; }
+
+/* Panah kecil di atas popup */
+#translation-popup::before { 
+    content: ''; 
+    position: absolute; 
+    bottom: 100%; 
+    left: 20px; 
+    border-width: 8px; 
+    border-style: solid; 
+    border-color: transparent transparent #FDB931 transparent; 
+}
+
+/* Tombol Tambah Bookmark (+) */
+.add-vocab-btn {
+    background-color: transparent;
+    border: 1px solid #FDB931;
+    color: #FDB931;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+.add-vocab-btn:hover { background-color: #FDB931; color: #1a0b2e; box-shadow: 0 0 10px #FDB931; }
+.add-vocab-btn.added { background-color: #10b981; color: white; border-color: #10b981; }
+.add-vocab-btn.added:hover { background-color: #059669; border-color: #059669; box-shadow: none; }
+
+/* ================================================================ */
+/* ================= KONTROL UI (FONT & SIDEBAR) ================== */
+/* ================================================================ */
+.ui-controls { position: fixed; top: 1rem; right: 1.5rem; z-index: 1001; display: flex; gap: 0.5rem; }
+
+#font-adjuster-toggle, #vocab-toggle-button { 
+    padding: 0.6rem; 
+    border-radius: 50%; 
+    cursor: pointer; 
+    background: #1a0b2e; /* Solid */
+    border: 1px solid rgba(255, 215, 0, 0.3); 
+    color: #FDB931; 
+    transition: all 0.2s ease-in-out; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+#font-adjuster-toggle:hover, #vocab-toggle-button:hover { 
+    background: #FDB931; 
+    color: #1a0b2e; 
+    box-shadow: 0 0 15px rgba(253, 185, 49, 0.4);
+}
+
+#font-adjuster-container { 
+    position: fixed; 
+    top: 4.5rem; 
+    right: 1.5rem; 
+    z-index: 1000; 
+    display: flex; 
+    align-items: center; 
+    gap: 0.75rem; 
+    padding: 1rem 1.25rem; 
+    border-radius: 1rem; 
+    background: #1a0b2e; 
+    border: 1px solid rgba(255, 215, 0, 0.3); 
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); 
+    opacity: 0; 
+    transform: translateY(-10px); 
+    pointer-events: none; 
+    transition: opacity 0.3s ease, transform 0.3s ease; 
+}
+#font-adjuster-container.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.font-adjuster-icon { color: #FDB931; font-weight: 600; }
+
+input[type="range"] { -webkit-appearance: none; appearance: none; width: 120px; height: 4px; background: rgba(255, 255, 255, 0.2); border-radius: 5px; outline: none; cursor: pointer; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; background: #FDB931; border-radius: 50%; border: 2px solid #1a0b2e; transition: transform 0.2s ease; }
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+/* Ukuran Font Dinamis */
+#articles-container.font-size-1 .text-lg { font-size: 0.9rem; line-height: 1.5rem; }
+#articles-container.font-size-2 .text-lg { font-size: 1.0rem; line-height: 1.65rem; }
+#articles-container.font-size-3 .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+#articles-container.font-size-4 .text-lg { font-size: 1.25rem; line-height: 1.9rem; }
+#articles-container.font-size-5 .text-lg { font-size: 1.4rem; line-height: 2.1rem; }
+
+/* ================================================================ */
+/* ================== PANEL BOOKMARK (SIDEBAR) =================== */
+/* ================================================================ */
+#vocab-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 380px;
+    max-width: 90vw;
+    height: 100%;
+    z-index: 1002;
+    /* Background Opaque Dark */
+    background: rgba(13, 10, 20, 0.98); 
+    border-left: 1px solid rgba(255, 215, 0, 0.3);
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -10px 0 50px rgba(0,0,0,0.8);
+}
+
+#vocab-sidebar.visible { transform: translateX(0); }
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    flex-shrink: 0;
+}
+
+.sidebar-header h3 { color: #FDB931; font-family: 'Cinzel', serif; letter-spacing: 0.05em; }
+
+#clear-vocab-button {
+    background-color: transparent;
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: #fca5a5;
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+#clear-vocab-button:hover { background-color: rgba(239, 68, 68, 0.2); color: #fff; border-color: #ef4444; }
+
+#vocab-list {
+    list-style: none;
+    padding: 0.5rem;
+    margin: 0;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+#vocab-list::-webkit-scrollbar { width: 4px; }
+#vocab-list::-webkit-scrollbar-track { background: transparent; }
+#vocab-list::-webkit-scrollbar-thumb { background-color: rgba(255, 215, 0, 0.3); }
+
+.vocab-item {
+    padding: 1rem;
+    margin: 0.75rem 0.5rem;
+    border-radius: 0.5rem;
+    background-color: #1a0b2e; /* Solid Card */
+    border: 1px solid #332149;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.vocab-item:hover {
+    border-color: rgba(255, 215, 0, 0.4);
+    background-color: #240f3e;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.vocab-item-original { font-weight: 600; color: #FDB931; margin-bottom: 0.25rem; font-family: 'Cinzel', serif; }
+.vocab-item-translation { font-size: 0.9rem; color: #e2e8f0; margin-bottom: 0.75rem; font-style: italic; }
+.vocab-item-source { font-size: 0.7rem; color: #64748b; border-top: 1px dashed rgba(255, 255, 255, 0.1); padding-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+.delete-vocab-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: none;
+    color: #64748b;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    opacity: 0.5;
+}
+.vocab-item:hover .delete-vocab-btn { opacity: 1; }
+.delete-vocab-btn:hover { color: #ef4444; }
+.empty-vocab-message { text-align: center; padding: 2rem; color: #64748b; font-style: italic; }
+
+/* ================================================================ */
+/* ================= PREVIEW GAMBAR (OVERLAY) ===================== */
+/* ================================================================ */
+#image-preview-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95); /* Sangat gelap */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 2000;
+    display: none; 
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+#image-preview-overlay.visible { opacity: 1; pointer-events: auto; }
+
+#preview-image {
+    max-width: 90vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.2s ease-out;
+    transform-origin: center center;
+}
+#preview-image.pannable { cursor: grab; }
+#preview-image.panning { cursor: grabbing; }
+
+.preview-controls {
+    position: absolute;
+    top: 50%; 
+    transform: translateY(-50%); 
+    right: 1.5rem;
+    display: flex;
+    flex-direction: column; 
+    gap: 0.75rem; 
+    background-color: rgba(20, 20, 30, 0.8);
+    padding: 0.75rem 0.5rem; 
+    border-radius: 2rem; 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 10; 
+}
+
+.preview-control-btn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    color: #e2e8f0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.preview-control-btn:hover { background-color: #FDB931; color: #000; }
+#preview-close-button { font-size: 2rem; order: 4; color: #ef4444; }
+#preview-close-button:hover { background-color: #ef4444; color: #fff; transform: rotate(90deg); }

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunrise on the Reaping | eReader</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.fog.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-black text-slate-300 antialiased selection:bg-yellow-600 selection:text-white">
+
+    <div id="progress-bar"></div>
+
+    <div id="vanta-bg"></div>
+
+    <div class="ui-controls">
+        <button id="vocab-toggle-button" title="Lihat Bookmark">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+        </button>
+        <button id="font-adjuster-toggle" title="Ubah Ukuran Font">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 7V4h16v3"/>
+                <path d="M9 20h6"/>
+                <path d="M12 4v16"/>
+            </svg>
+        </button>
+    </div>
+
+    <div id="font-adjuster-container">
+        <span class="font-adjuster-icon text-sm">A</span>
+        <input type="range" id="font-size-slider" min="1" max="5" value="3" step="1">
+        <span class="font-adjuster-icon text-xl">A</span>
+    </div>
+
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl relative z-10">
+
+        <header class="text-center mb-12 relative">
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-64 bg-yellow-500 rounded-full blur-[100px] opacity-20 -z-10"></div>
+            
+            <img src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1729085500i/214331246.jpg" alt="Sunrise on the Reaping Cover" class="w-48 mx-auto rounded-lg shadow-2xl mb-6 border border-yellow-500/30">
+            
+            <h1 class="text-3xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-yellow-200 via-yellow-400 to-yellow-600 font-serif tracking-wide drop-shadow-lg" style="font-family: 'Cinzel', serif;">
+                SUNRISE ON THE REAPING
+            </h1>
+
+            <h2 class="text-xl text-purple-200 mt-2 font-light tracking-widest uppercase opacity-80">
+                The Hunger Games
+            </h2>
+    
+            <p class="mt-4">
+                <a href="https://www.goodreads.com/book/show/214331246-sunrise-on-the-reaping" target="_blank" rel="noopener noreferrer" class="text-yellow-400 hover:text-yellow-200 transition-colors duration-300 font-medium border-b border-transparent hover:border-yellow-200 pb-0.5">
+                    Suzanne Collins
+                </a>
+            </p>
+        </header>
+
+        <main id="articles-container" class="space-y-6">
+            </main>
+        
+        <footer class="text-center mt-16 pb-8 text-purple-300/60 text-sm">
+            <p>&copy; Syhr0el 2025 Bilingual Reader.</p>
+        </footer>
+
+    </div>
+
+    <div id="translation-popup"></div>
+
+    <div id="vocab-sidebar">
+        <div class="sidebar-header">
+            <h3 class="text-lg font-semibold text-yellow-100 tracking-wide">Tribute's Notes</h3>
+            <button id="clear-vocab-button" title="Hapus Semua">Hapus Semua</button>
+        </div>
+        <ul id="vocab-list">
+        </ul>
+    </div>
+
+    <div id="image-preview-overlay">
+        <div class="preview-controls">
+            <button class="preview-control-btn" id="zoom-in-button" title="Perbesar">+</button>
+            <button class="preview-control-btn" id="zoom-out-button" title="Perkecil">-</button>
+            <button class="preview-control-btn" id="zoom-reset-button" title="Reset Zoom">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/><path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/></svg>
+            </button>
+            <button class="preview-control-btn" id="preview-close-button" title="Tutup">&times;</button>
+        </div>
+        <img src="" alt="Pratinjau Gambar" id="preview-image">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
