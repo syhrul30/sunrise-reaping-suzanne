@@ -514,44 +514,167 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 #vocab-list::-webkit-scrollbar-thumb { background-color: rgba(255, 215, 0, 0.3); }
 
 .vocab-item {
-    padding: 1rem;
-    margin: 0.75rem 0.5rem;
-    border-radius: 0.5rem;
-    background-color: #1a0b2e; /* Solid Card */
-    border: 1px solid #332149;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    position: relative;
+     position: relative;
+     padding: 1rem;
+   margin-bottom: 1.25rem;
+     border-radius: 0.5rem;
+   /* Redesign: Card dengan gradient dan depth */
+   background: linear-gradient(145deg, #1e1136, #130725);
+   border: 1px solid rgba(167, 139, 250, 0.1); /* Border ungu sangat tipis */
+   box-shadow: 
+       inset 0 1px 0 rgba(255, 255, 255, 0.05), /* Highlight atas */
+       0 4px 6px rgba(0, 0, 0, 0.3), /* Shadow bawah */
+       0 0 0 1px rgba(0, 0, 0, 0.2); /* Outline halus */
+   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+     cursor: pointer;
+   overflow: hidden; /* Untuk efek badge */
+ }
+ 
+ .vocab-item:hover {
+   transform: translateY(-3px) scale(1.01);
+   border-color: rgba(167, 139, 250, 0.4);
+   box-shadow: 
+       inset 0 1px 0 rgba(255, 255, 255, 0.1),
+       0 8px 15px rgba(0, 0, 0, 0.4),
+       0 0 15px rgba(167, 139, 250, 0.2); /* Glow ungu saat hover */
+ }
+ 
+/* Tipografi Card yang Lebih Rapi */
+.vocab-item-book { 
+   font-size: 0.6rem; 
+   color: #a78bfa; /* Aksen Ungu */
+   font-weight: 700; 
+   letter-spacing: 0.08em; 
+   margin-bottom: 0.35rem; 
+   text-transform: uppercase; 
+   opacity: 0.8;
 }
-
-.vocab-item:hover {
-    border-color: rgba(255, 215, 0, 0.4);
-    background-color: #240f3e;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+.vocab-item-original { 
+   font-size: 1.05rem;
+   font-weight: 600; 
+   color: #FDB931; /* Emas */
+   margin-bottom: 0.35rem; 
+   font-family: 'Cinzel', serif;
+   line-height: 1.3;
+   text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
-
-.vocab-item-original { font-weight: 600; color: #FDB931; margin-bottom: 0.25rem; font-family: 'Cinzel', serif; }
-.vocab-item-translation { font-size: 0.9rem; color: #e2e8f0; margin-bottom: 0.75rem; font-style: italic; }
-.vocab-item-source { font-size: 0.7rem; color: #64748b; border-top: 1px dashed rgba(255, 255, 255, 0.1); padding-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
-
-.delete-vocab-btn {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 20px;
-    height: 20px;
-    border: none;
-    background: none;
-    color: #64748b;
-    font-size: 1.2rem;
-    line-height: 1;
-    cursor: pointer;
-    transition: color 0.2s ease;
-    opacity: 0.5;
+.vocab-item-translation { 
+   font-size: 0.9rem; 
+   color: #cbd5e1; /* Putih keabu-abuan */
+   margin-bottom: 0.8rem; 
+   font-style: italic; 
+   line-height: 1.4;
 }
-.vocab-item:hover .delete-vocab-btn { opacity: 1; }
-.delete-vocab-btn:hover { color: #ef4444; }
-.empty-vocab-message { text-align: center; padding: 2rem; color: #64748b; font-style: italic; }
+.vocab-item-source { 
+   font-size: 0.65rem; 
+   color: #64748b; 
+   border-top: 1px solid rgba(167, 139, 250, 0.15); /* Separator lebih halus */
+   padding-top: 0.6rem; 
+   text-transform: uppercase; 
+   letter-spacing: 0.05em; 
+   display: flex;
+   justify-content: flex-end; /* Rata kanan */
+}
+ 
+ /* --- STYLING KHUSUS V5.6 (LAST READ & DIVIDER) --- */
+ 
+/* Redesign: Item Last Read yang "Magis" */
+ .vocab-item.last-read {
+   /* Teknik Gradient Border */
+   border: 1px solid transparent;
+   background-image: linear-gradient(145deg, #1e1136, #130725), linear-gradient(135deg, #FDB931, #d97706, #a78bfa);
+   background-origin: border-box;
+   background-clip: padding-box, border-box;
+   box-shadow: 
+       inset 0 0 20px rgba(253, 185, 49, 0.05), /* Inner glow emas tipis */
+         0 5px 15px rgba(0, 0, 0, 0.4),
+         0 0 20px rgba(253, 185, 49, 0.2); /* Outer glow emas */
+   /* PERBAIKAN: Tambah padding atas agar teks tidak tertutup badge */
+   padding-top: 2rem;
+ }
+ 
+ .vocab-item.last-read:hover {
+   transform: translateY(-3px) scale(1.01);
+   box-shadow: 
+       inset 0 0 30px rgba(253, 185, 49, 0.1),
+       0 8px 20px rgba(0, 0, 0, 0.5),
+       0 0 25px rgba(253, 185, 49, 0.3); /* Glow emas lebih kuat saat hover */
+ }
+ 
+/* Redesign: Badge Last Read */
+ .last-read-badge {
+   background: linear-gradient(90deg, #FDB931, #d97706); /* Gradient Emas */
+   color: #1a0b2e;
+   font-family: 'Cinzel', serif;
+   font-size: 0.6rem;
+   font-weight: 700;
+   letter-spacing: 0.05em;
+   padding: 0.25rem 0.75rem;
+   border-radius: 0 0 0.5rem 0;
+   box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+     position: absolute;
+     top: 0;
+     left: 0;
+     z-index: 5;
+   pointer-events: none;
+ }
+ 
+/* Redesign: Divider yang lebih halus */
+ .vocab-divider {
+     text-align: center;
+     font-size: 0.7rem;
+   color: #94a3b8;
+   margin: 2rem 0 1rem 0;
+     position: relative;
+   letter-spacing: 0.15em;
+   font-weight: 600;
+   text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+ }
+ .vocab-divider::before, .vocab-divider::after {
+     content: '';
+     display: inline-block;
+   width: 40px;
+   height: 2px;
+   /* Garis gradient pudar */
+   background: linear-gradient(to right, transparent, rgba(167, 139, 250, 0.4), transparent);
+     vertical-align: middle;
+     margin: 0 10px;
+ }
+ 
+/* Redesign: Tombol Hapus (Muncul hanya saat Hover) */
+ .delete-vocab-btn {
+     position: absolute;
+   top: 0.75rem;
+   right: 0.75rem;
+   background: rgba(239, 68, 68, 0.15); /* Latar belakang merah transparan */
+   border: 1px solid rgba(239, 68, 68, 0.3);
+   color: #fca5a5; /* Merah terang */
+     cursor: pointer;
+   font-size: 1rem;
+   width: 24px;
+   height: 24px;
+   border-radius: 50%; /* Bentuk bulat */
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   opacity: 0; /* Sembunyi by default */
+   transform: scale(0.8);
+     transition: all 0.2s ease;
+ }
+ 
+.vocab-item:hover .delete-vocab-btn {
+   opacity: 1; /* Muncul saat card di-hover */
+   transform: scale(1);
+}
+ 
+ .delete-vocab-btn:hover {
+   background: rgba(239, 68, 68, 0.9); /* Merah solid saat tombol di-hover */
+   color: white;
+   border-color: transparent;
+   box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+ }
+ 
+ .empty-vocab-message { text-align: center; padding: 2rem; color: #64748b; font-style: italic; }
 
 /* ================================================================ */
 /* ================= PREVIEW GAMBAR (OVERLAY) ===================== */
